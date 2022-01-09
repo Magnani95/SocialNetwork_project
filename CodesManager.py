@@ -31,7 +31,8 @@ class CodesManager(object):
 				code = int(row[0])
 				country = {'name':row[1], '2D':row[3], '3D':row[4]}
 				self.countries[code] = country
-			#print(self.countries); exit(1)
+
+			print("n_counties: ",len(self.countries))
 
 	def __load_productsAndCategories(self):
 		print("--Loading products & categories...")

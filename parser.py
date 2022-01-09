@@ -13,6 +13,9 @@ codes_man = graph_man.codes_manager
 def __print(*args, **kargs):
 	#print(*args, **kargs)
 	pass
+
+
+
 #	FUNCTIONs
 def test(execute):
 	if not execute:
@@ -84,26 +87,34 @@ def main():
 	main_g = graph_man.main_graph
 	graph_man.load_all_csv2graph(datasets)
 
-	print("nodes:", main_g.number_of_nodes(),"\tedges: ", main_g.number_of_edges())
 
 	#print("+ NODES\t", len(graph.nodes))
 	#print("+ EDGES\t", len(graph.edges))
 	#print("+ DEGREE\t", graph.degree())
 
 	source_country_id = 4 	# Italy 381
-	target_country_id = 40
-	__print("Single node data of country:\t", source_country_id)
-	for n, edges in main_g.adj[source_country_id].items():
-		__print("Neighbour_id\t", n, "[",codes_man.code2country(n)['name'] ,"]")
+	target_country_id = 260
+	t_g = graph_man.categories_graph
+	print("Single node data of country:\t", source_country_id)
+	for n, edges in t_g.adj[source_country_id].items():
+		print("Neighbour_id\t", n, "[",codes_man.code2country(n)['name'] ,"]")
 		i =0
 		for e, attr in edges.items():
-			__print("\t", e," Prod_id\t", attr['prod_id'], "-", codes_man.p_code2cat(attr['prod_id']))
+			#__print("\t", e," Prod_id\t", attr['prod_id'], "-", codes_man.p_code2cat(attr['prod_id']))
+			print("\t", e," cat_id\t", attr['cat_id'], "-", codes_man.c_code2name(attr['cat_id']))
+
 		__print("+++")
 	__print("###")
-
+	return
 	c_degree = graph_man.centrality_degree()
-	print("DEGREE STD_n",len(c_degree['std']['all']),"\n", c_degree['std']['all'])
+	c_degree_cat = graph_man.centrality_degree(graph=graph_man.categories_graph)
+	#print("DEGREE STD_n",len(c_degree['std']['all']),"\n", c_degree['std']['all'])
 
+	ngb = graph_man._get_n_edges_per_node()
+	print("id\tin\tout\tunique\t(norm.)")
+	for n in graph_man._get_nodes_idx_list():
+		print(n,":\t", ngb['in'][n]," - ",ngb['out'][n]," - ",ngb['unique'][n],"\t(",round(ngb['unique_n'][n],4),")")
+	print("Max:\t", ngb['max'])
 
 if __name__ == '__main__':
 	main()
